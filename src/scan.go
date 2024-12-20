@@ -9,8 +9,9 @@ import (
 
 // 保存端口信息的基础数据类型
 type PortInfo struct {
-	port     int
-	protocol string
+	port     int    //22
+	protocol string //SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.10
+	ip       string //xxx.xxx.xxx.xxx:22
 }
 
 func ScanTCPPort(ip string, port int, ports *[]PortInfo, mutex *sync.Mutex, wg *sync.WaitGroup) {
@@ -22,7 +23,7 @@ func ScanTCPPort(ip string, port int, ports *[]PortInfo, mutex *sync.Mutex, wg *
 	// Don't use DialTimeout
 	if err == nil {
 		defer conn.Close()
-		result := PortInfo{port: port, protocol: readConnection(conn)}
+		result := PortInfo{port: port, protocol: readConnection(conn), ip: conn.RemoteAddr().String()}
 		mutex.Lock()
 		*ports = append(*ports, result)
 		mutex.Unlock()
@@ -48,7 +49,7 @@ func ScanTCPPortDT(ip string, port int, ports *[]PortInfo, mutex *sync.Mutex, wg
 	// Don't use DialTimeout
 	if err == nil {
 		defer conn.Close()
-		result := PortInfo{port: port, protocol: readConnection(conn)}
+		result := PortInfo{port: port, protocol: readConnection(conn), ip: conn.RemoteAddr().String()}
 		mutex.Lock()
 		*ports = append(*ports, result)
 		mutex.Unlock()
@@ -67,11 +68,11 @@ func readConnection(conn net.Conn) string {
 	conn.SetReadDeadline(time.Now().Add(5 * time.Second)) // 设置读取超时
 	n, err := conn.Read(buffer)
 	if err == nil {
-		log.Infof("%s Received data: %s ", conn.RemoteAddr().String(), string(buffer[:n]))
+		log.Infof("%s Received data: \n %s", conn.RemoteAddr().String(), string(buffer[:n]))
 		return string(buffer[:n])
 
 	} else {
 		log.Warn("Error reading data: ", err)
-		return fmt.Sprint(err)
+		return fmt.Sprint("Time out %s", err)
 	}
 }

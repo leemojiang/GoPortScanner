@@ -19,7 +19,7 @@ func init() {
 	flag.IntVar(&maxport, "u", 65536, "Max port number")
 	flag.IntVar(&dt, "dt", 0, "Port Access interval in ms, -1 for no wait")
 	flag.BoolVar(&debug, "debug", false, "Debug Log level")
-	flag.StringVar(&ip, "ip", "127.0.0.1", "IP address")
+	flag.StringVar(&ip, "a", "127.0.0.1", "Host Address")
 	flag.Parse()
 
 	log.SetLevel(logrus.InfoLevel)
@@ -59,7 +59,12 @@ func main() {
 	}
 
 	wg.Wait()
+
+	//程序结束 打印结果
+	fmt.Println("Scanned Address: ", ip)
 	elapsed := time.Since(start)
 	fmt.Println("Scanned from ", minport, " to ", maxport, " in ", elapsed)
-	fmt.Println(ports)
+	PrintPorts(ports)
+	// PrintPortInfo(ports)
+	PrintPortTable(ports)
 }
