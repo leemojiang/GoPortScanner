@@ -37,7 +37,7 @@ func init() {
 func main() {
 	start := time.Now()
 
-	ports := []int{}
+	ports := []PortInfo{}
 	wg := &sync.WaitGroup{}
 	mutex := &sync.Mutex{}
 
@@ -48,13 +48,6 @@ func main() {
 		ticker = time.NewTicker(time.Duration(dt) * time.Millisecond)
 		defer ticker.Stop()
 	}
-
-	// for {
-	// 	select {
-	// 	case t := <-ticker.C:
-	// 		fmt.Print(t)
-	// 	}
-	// }
 
 	for i := minport; i < maxport; i++ {
 		wg.Add(1)
