@@ -73,6 +73,6 @@ func readConnection(conn net.Conn) string {
 
 	} else {
 		log.Warn("Error reading data: ", err)
-		return fmt.Sprint("Time out %s", err)
+		return fmt.Sprintf("Time out %s", err)
 	}
 }

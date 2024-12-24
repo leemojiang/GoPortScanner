@@ -37,6 +37,11 @@ func init() {
 func main() {
 	start := time.Now()
 
+	//ping
+	if !PingWithCommand(ip) {
+		log.Fatal("Ping Failed")
+	}
+
 	ports := []PortInfo{}
 	wg := &sync.WaitGroup{}
 	mutex := &sync.Mutex{}
