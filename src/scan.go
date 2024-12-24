@@ -65,7 +65,7 @@ func readConnection(conn net.Conn) string {
 		return fmt.Sprint(err)
 	}
 	buffer := make([]byte, 1024)
-	conn.SetReadDeadline(time.Now().Add(5 * time.Second)) // 设置读取超时
+	conn.SetReadDeadline(time.Now().Add(10 * time.Second)) // 设置读取超时
 	n, err := conn.Read(buffer)
 	if err == nil {
 		log.Infof("%s Received data: \n %s", conn.RemoteAddr().String(), string(buffer[:n]))
